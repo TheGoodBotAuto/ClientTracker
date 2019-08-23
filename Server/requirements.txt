@@ -1,4 +1,8 @@
 Flask==1.0.2
 Flask-Cors==3.0.7
+flask_script
+flask_migrate
 flask-sqlalchemy
+flask-restplus
 psycopg2
+psycopg2-binary

@@ -5,7 +5,10 @@ WORKDIR /usr/src/app
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY ./app.py ./
+COPY ./ ./
+
+#RUN python manage.py db init
+#RUN python manage.py db migrate
 
 ENTRYPOINT [ "python" ]
-CMD [ "./app.py" ]
+CMD [ "./main.py" ]
