@@ -15,7 +15,7 @@ class TypeList(Resource):
 
   @api.marshal_with(model)
   @api.expect(model)
-  def post(self, app):
+  def post(self):
     data = request.json
     return add_assessment_type(data)
 

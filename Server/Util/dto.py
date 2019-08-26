@@ -65,7 +65,7 @@ class FindingDto:
     'finding_severity': fields.String(),
     'recommended_fix': fields.String(),
     'date_discovered': fields.DateTime(),
-    'date_remediated': fields.DateTime(),
+    'date_remediated': fields.DateTime(default=None),
     'finding_comments': fields.String()
   })
 

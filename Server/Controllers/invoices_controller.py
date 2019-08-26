@@ -1,7 +1,7 @@
 from flask_restplus import Resource, Namespace
 from flask import jsonify, request
 from Models.invoices import Invoice
-from Services.invoice_service import get_all_invoices,add_invoice, update_invoice
+from Services.invoice_service import get_all_invoices,add_invoice, update_invoice, get_invoice, delete_invoice
 from Util.dto import InvoiceDto
 
 api=InvoiceDto.api
@@ -17,7 +17,7 @@ class InvoiceList(Resource):
 
   @api.marshal_with(model)
   @api.expect(model)
-  def post(self, app):
+  def post(self):
     data = request.json
     add_invoice(data)
 
@@ -27,8 +27,11 @@ class InvoiceList(Resource):
 class Inv(Resource):
   @api.doc('Get Invoice info')
   @api.marshal_with(Invoice)
-  def get(self, id):
-    return jsonify('pong')
+  def get(self, invoice_id):
+    return get_invoice(invoice_id)
+
+  def delete(self, invoice_id):
+    return delete_invoice(invoice_id)
 
 @api.route('/healthcheck')
 class healthCheck(Resource):

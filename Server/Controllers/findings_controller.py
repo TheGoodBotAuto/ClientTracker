@@ -2,7 +2,7 @@ from flask_restplus import Resource, Namespace
 from flask import jsonify, request
 from Models.findings import Finding
 from Util.dto import FindingDto
-from Services.finding_service import get_all_findings, add_finding,update_finding
+from Services.finding_service import get_all_findings, add_finding,update_finding, get_finding, delete_finding
 
 api=FindingDto.api
 model=FindingDto.model
@@ -17,7 +17,7 @@ class FindingList(Resource):
 
   @api.marshal_with(model)
   @api.expect(model)
-  def post(self, app):
+  def post(self):
     data = request.json
     return add_finding(data)
 
@@ -27,8 +27,11 @@ class FindingList(Resource):
 class Find(Resource):
   @api.doc('Get Finding info')
   @api.marshal_with(model)
-  def get(self, id):
-    return jsonify('pong')
+  def get(self, finding_id):
+    return get_finding(finding_id)
+
+  def delete(self, finding_id):
+    return delete_finding(finding_id)
 
 @api.route('/healthcheck')
 class healthCheck(Resource):

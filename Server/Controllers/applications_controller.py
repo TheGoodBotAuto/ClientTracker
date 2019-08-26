@@ -1,7 +1,7 @@
 from flask_restplus import Resource, Namespace, fields
 from flask import jsonify, request
 from Util.dto import ApplicationDto
-from Services.application_service import get_all_applications,add_application,update_application
+from Services.application_service import get_all_applications,add_application,update_application, delete_application,get_application
 
 api=ApplicationDto.api
 model=ApplicationDto.model
@@ -17,7 +17,7 @@ class AppList(Resource):
 
   @api.marshal_with(model)
   @api.expect(model)
-  def post(self, app):
+  def post(self):
     data = request.json
     return add_application(data)
 
@@ -27,8 +27,11 @@ class AppList(Resource):
 class App(Resource):
   @api.doc('Get Application info')
   @api.marshal_with(model)
-  def get(self, id):
-    return jsonify('pong')
+  def get(self, app_id):
+    return get_application(app_id)
+
+  def delete(self,app_id):
+    return delete_application(app_id)
 
 @api.route('/healthcheck')
 class healthCheck(Resource):

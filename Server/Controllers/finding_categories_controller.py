@@ -2,7 +2,7 @@ from flask_restplus import Resource, Namespace
 from flask import jsonify, request
 from Models.finding_categories import FindingCategory
 from Util.dto import FindingCategoryDto
-from Services.finding_category_service import get_all_finding_categories,add_finding_category,update_category
+from Services.finding_category_service import get_all_finding_categories,add_finding_category,update_category, get_finding_category, delete_finding_category
 
 api=FindingCategoryDto.api
 model=FindingCategoryDto.model
@@ -17,7 +17,7 @@ class CategoryList(Resource):
 
   @api.marshal_with(model)
   @api.expect(model)
-  def post(self, app):
+  def post(self):
     data=request.json
     return add_finding_category(data)
 
@@ -27,8 +27,11 @@ class CategoryList(Resource):
 class Category(Resource):
   @api.doc('Get Category info')
   @api.marshal_with(model)
-  def get(self, id):
-    return jsonify('pong')
+  def get(self, category_id):
+    return get_finding_category(category_id)
+  
+  def delete(self, category_id):
+    return delete_finding_category(category_id)
 
 @api.route('/healthcheck')
 class healthCheck(Resource):
