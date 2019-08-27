@@ -28,10 +28,20 @@ class Find(Resource):
   @api.doc('Get Finding info')
   @api.marshal_with(model)
   def get(self, finding_id):
-    return get_finding(finding_id)
+    finding = get_finding(finding_id)
+    if not finding:
+      api.abort(404)
+    else:
+      return finding
 
   def delete(self, finding_id):
     return delete_finding(finding_id)
+
+  @api.doc('Update Finding info')
+  @api.marshal_with(model)
+  def post(self, finding_id):
+    data=request.json
+    return update_finding(finding_id,data)
 
 @api.route('/healthcheck')
 class healthCheck(Resource):

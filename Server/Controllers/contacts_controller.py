@@ -28,10 +28,20 @@ class Cont(Resource):
   @api.doc('Get Contact info')
   @api.marshal_with(model)
   def get(self, contact_id):
-    return get_contact(contact_id)
+    contact= get_contact(contact_id)
+    if not contact:
+      api.abort(404)
+    else:
+      return contact
 
   def delete(self, contact_id):
     return delete_contact(contact_id)
+
+  @api.doc('Update Contact info')
+  @api.marshal_with(model)
+  def post(self,contact_id):
+    data = request.json
+    return update_contact(contact_id,data)
 
 @api.route('/healthcheck')
 class healthCheck(Resource):

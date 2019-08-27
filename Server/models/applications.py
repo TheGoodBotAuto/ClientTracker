@@ -7,10 +7,5 @@ class Application(db.Model):
   customer_id = db.Column('customer_id', db.Integer, db.ForeignKey('customers.customer_id'))
   application_type = db.Column('application_type', db.String())
 
-  def __init__(self, application_name, customer_id, application_type):
-    self.application_name=application_name
-    self.customer_id=customer_id
-    self.application_type=application_type
-
   def __repr__(self):
     return '<id {}>'.format(self.application_id)

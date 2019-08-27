@@ -1,7 +1,7 @@
 from flask_restplus import Resource, Namespace
 from flask import jsonify, request
 from Util.dto import AssessmentTypeDto
-from Services.assessment_type_service import get_all_assessment_types, add_assessment_type, update_assessment_type
+from Services.assessment_type_service import get_all_assessment_types, get_assessment_type, add_assessment_type, update_assessment_type, delete_assessment_type
 
 api= AssessmentTypeDto.api
 model = AssessmentTypeDto.model
@@ -25,8 +25,23 @@ class TypeList(Resource):
 class Type(Resource):
   @api.doc('Get Assessment Type info')
   @api.marshal_with(model)
-  def get(self, id):
-    return jsonify('pong')
+  def get(self, assessmenttype_id):
+    assessment = get_assessment_type(assessmenttype_id)
+    if not assessment:
+      api.abort(404)
+    else:
+      return assessment
+  
+  @api.doc('Delete Assessment Type info')
+  @api.marshal_with(model)
+  def delete(self, assessmenttype_id):
+    return delete_assessment_type(assessmenttype_id)
+
+  @api.doc('Update Assessment Type info')
+  @api.marshal_with(model)
+  def post(self, assessmenttype_id):
+    data = request.json
+    return update_assessment_type(assessmenttype_id,data)
 
 @api.route('/healthcheck')
 class healthCheck(Resource):

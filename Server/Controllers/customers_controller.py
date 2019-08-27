@@ -1,7 +1,7 @@
 from flask_restplus import Resource, Namespace
 from flask import jsonify, request
 from Util.dto import CustomerDto
-from Services.customer_service import get_all_customers, add_customer, delete_customer, get_customer
+from Services.customer_service import get_all_customers, add_customer, delete_customer, get_customer, update_customer
 
 api = CustomerDto.api
 model = CustomerDto.model
@@ -26,11 +26,22 @@ class Cli(Resource):
   @api.doc('Get Customer info')
   @api.marshal_with(model)
   def get(self, customer_id):
-    return get_customer(customer_id)
+    customer =  get_customer(customer_id)
+    if not customer:
+      api.abort(404)
+    else:
+      return customer
+
+
   @api.doc('Delete Customer info')
   @api.marshal_with(model)
   def delete(self, customer_id):
     return delete_customer(customer_id)
+  @api.doc('Update Customer info')
+  @api.marshal_with(model)
+  def post(self, customer_id):
+    data = request.json
+    return update_customer(customer_id,data)
 
 @api.route('/healthcheck')
 class healthCheck(Resource):

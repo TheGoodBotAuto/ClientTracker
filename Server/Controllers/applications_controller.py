@@ -28,10 +28,20 @@ class App(Resource):
   @api.doc('Get Application info')
   @api.marshal_with(model)
   def get(self, app_id):
-    return get_application(app_id)
+    app= get_application(app_id)
+    if not app:
+      api.abort(404)
+    else:
+      return app
 
   def delete(self,app_id):
     return delete_application(app_id)
+
+  @api.doc('Update Application info')
+  @api.marshal_with(model)
+  def post(self,app_id):
+    data = request.json
+    return update_application(app_id,data)
 
 @api.route('/healthcheck')
 class healthCheck(Resource):

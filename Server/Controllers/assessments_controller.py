@@ -28,10 +28,20 @@ class Assess(Resource):
   @api.doc('Get Assessment info')
   @api.marshal_with(model)
   def get(self, assessment_id):
-    return get_assessment(assessment_id)
+    assessment= get_assessment(assessment_id)
+    if not assessment:
+      api.abort(404)
+    else:
+      return assessment
 
   def delete(self, assessment_id):
     return delete_assessment(assessment_id)
+
+  @api.doc('Update Assessment info')
+  @api.marshal_with(model)
+  def post(self,assessment_id):
+    data = request.json
+    return update_assessment(assessment_id,data)
 
 @api.route('/healthcheck')
 class healthCheck(Resource):
